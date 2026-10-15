@@ -5,7 +5,7 @@ const db = require("../config/db");
 const getAllPatients = (callback) => {
 
     db.query(
-        "SELECT * FROM patients ORDER BY id DESC",
+        "SELECT *, Alletgies AS Allergies, chronic_conditions AS Chronic_Conditions, Blood_Group AS Blood_group FROM patients ORDER BY id DESC",
         callback
     );
 
@@ -16,7 +16,7 @@ const getAllPatients = (callback) => {
 const getPatientById = (id, callback) => {
 
     db.query(
-        "SELECT * FROM patients WHERE id = ?",
+        "SELECT *, Alletgies AS Allergies, chronic_conditions AS Chronic_Conditions, Blood_Group AS Blood_group FROM patients WHERE id = ?",
         [id],
         callback
     );
@@ -29,8 +29,8 @@ const createPatient = (data, callback) => {
 
     const sql = `
         INSERT INTO patients
-        (name, email, phone, gender, age, address)
-        VALUES (?, ?, ?, ?, ?, ?)
+        (name, email, phone, gender, age, address, Height, Weight, Alletgies, chronic_conditions, Blood_Group)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
@@ -38,10 +38,15 @@ const createPatient = (data, callback) => {
         [
             data.name,
             data.email,
-            data.phone,
-            data.gender,
-            data.age,
-            data.address
+            data.phone ?? null,
+            data.gender ?? null,
+            data.age ?? null,
+            data.address ?? null,
+            data.height ?? null,
+            data.weight ?? null,
+            data.allergies ?? null,
+            data.chronicConditions ?? null,
+            data.bloodGroup ?? null
         ],
         callback
     );
@@ -60,7 +65,12 @@ const updatePatient = (id, data, callback) => {
             phone = ?,
             gender = ?,
             age = ?,
-            address = ?
+            address = ?,
+            Height = ?,
+            Weight = ?,
+            Alletgies = ?,
+            chronic_conditions = ?,
+            Blood_Group = ?
         WHERE id = ?
     `;
 
@@ -69,10 +79,15 @@ const updatePatient = (id, data, callback) => {
         [
             data.name,
             data.email,
-            data.phone,
-            data.gender,
-            data.age,
-            data.address,
+            data.phone ?? null,
+            data.gender ?? null,
+            data.age ?? null,
+            data.address ?? null,
+            data.height ?? null,
+            data.weight ?? null,
+            data.allergies ?? null,
+            data.chronicConditions ?? null,
+            data.bloodGroup ?? null,
             id
         ],
         callback

@@ -1,5 +1,16 @@
 const patientModel = require("../models/patientModel");
 
+const pickField = (body, ...keys) => {
+
+    for (const key of keys) {
+        if (body[key] !== undefined) {
+            return body[key];
+        }
+    }
+
+    return undefined;
+};
+
 
 // ===========================
 // GET ALL PATIENTS
@@ -83,6 +94,12 @@ exports.createPatient = (req, res) => {
         address
     } = req.body;
 
+    const height = pickField(req.body, "Height", "height");
+    const weight = pickField(req.body, "Weight", "weight");
+    const allergies = pickField(req.body, "Allergies", "allergies", "Alletgies", "alletgies");
+    const chronicConditions = pickField(req.body, "Chronic_Conditions", "chronic_conditions", "chronicConditions");
+    const bloodGroup = pickField(req.body, "Blood_group", "Blood_Group", "blood_group", "bloodGroup");
+
 
     if (!name || !email) {
 
@@ -100,7 +117,12 @@ exports.createPatient = (req, res) => {
         phone,
         gender,
         age,
-        address
+        address,
+        height,
+        weight,
+        allergies,
+        chronicConditions,
+        bloodGroup
     };
 
 
@@ -145,6 +167,12 @@ exports.updatePatient = (req, res) => {
         address
     } = req.body;
 
+    const height = pickField(req.body, "Height", "height");
+    const weight = pickField(req.body, "Weight", "weight");
+    const allergies = pickField(req.body, "Allergies", "allergies", "Alletgies", "alletgies");
+    const chronicConditions = pickField(req.body, "Chronic_Conditions", "chronic_conditions", "chronicConditions");
+    const bloodGroup = pickField(req.body, "Blood_group", "Blood_Group", "blood_group", "bloodGroup");
+
 
     patientModel.updatePatient(
         id,
@@ -154,7 +182,12 @@ exports.updatePatient = (req, res) => {
             phone,
             gender,
             age,
-            address
+            address,
+            height,
+            weight,
+            allergies,
+            chronicConditions,
+            bloodGroup
         },
         (err, result) => {
 
